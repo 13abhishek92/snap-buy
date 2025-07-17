@@ -1,7 +1,7 @@
 {
   "name": "snap-buy",
   "version": "1.0.0",
-  "description": "Image-based price comparison backend for Snap-Buy",
+  "description": "Snap-Buy backend",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
