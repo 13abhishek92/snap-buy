@@ -3,37 +3,36 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Initialize Express
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Ensure uploads folder exists on server
+// Ensure uploads folder exists
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-// Middleware to parse JSON
+// Middleware
 app.use(express.json());
 
-// Multer storage setup
+// Multer setup
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: (req, file, cb) => {
     cb(null, 'uploads/');
   },
-  filename: function (req, file, cb) {
+  filename: (req, file, cb) => {
     const uniqueName = `${Date.now()}-${file.originalname}`;
     cb(null, uniqueName);
   }
 });
 const upload = multer({ storage: storage });
 
-// Root route (for health check)
+// Health check route
 app.get('/', (req, res) => {
   res.send('✅ Snap-Buy Backend is Running');
 });
 
-// 🟢 Image Upload Route — now at /uploads
+// Image upload route at /uploads
 app.post('/uploads', upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No image file uploaded' });
@@ -46,7 +45,7 @@ app.post('/uploads', upload.single('image'), (req, res) => {
   });
 });
 
-// Start the server
+// Start server
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
 });
